@@ -1,13 +1,14 @@
 services:
   app:
     build: 
-      context:
+      context: app/
     ports:
       - "6000:5000"
     volumes:
-      - ./app/app
+      - ./app:/app
     command: python app.py
 
   mongodb:
-    image: "mongo"
-    ports: "27017-27019:27017-27019"
+    image: mongo:latest
+    ports: 
+      - "27017:27017"
