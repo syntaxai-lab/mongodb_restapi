@@ -106,6 +106,48 @@ class Store(Resource):
         return jsonify(retJson)
 
 
+class Get(Resource):
+    def post(self):
+        postedData = request.get_json()
+
+        username = postedData["username"]
+        password = postedData["password"]
+
+        # verify the username pw match
+        correct_pw = verifyPw(username, password)
+        if not correct_pw:
+            retJson = {
+                "status": 302
+            }
+            return jsonify(retJson)
+
+        num_tokens = countTokens(username)
+        if num_tokens <= 0:
+            retJson = {
+                "status": 301
+            }
+            return jsonify(retJson)
+
+        # MAKE THE USER PAY!
+        users.update_one({
+            "Username": username
+        }, {
+            "$set": {
+                "Tokens": num_tokens-1
+                }
+        })
+
+        sentence = users.find({
+            "Username": username
+        })[0]["Sentence"]
+        retJson = {
+            "status": 200,
+            "sentence": str(sentence)
+        }
+
+        return jsonify(retJson)
+
+
 # ************************************************
 sentences = ["This is an example sentence", "Each sentence is converted"]
 
@@ -113,6 +155,10 @@ model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 embeddings = model.encode(sentences)
 print(embeddings)
 
+
+api.add_resource(Register, '/register')
+api.add_resource(Store, '/store')
+api.add_resource(Get, '/get')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)
