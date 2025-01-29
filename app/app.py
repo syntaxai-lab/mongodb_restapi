@@ -1,4 +1,4 @@
-import os
+from functools import wraps
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
 from pymongo import MongoClient
@@ -12,7 +12,7 @@ api = Api(app)
 
 
 # db setup
-client = MongoClient("mongodb://db:27017")
+client = MongoClient("mongodb://mongodb:27017")
 db = client.SentencesDatabase
 users = db['Users']
 
@@ -150,10 +150,10 @@ class Get(Resource):
 
 # ************************************************
 sentences = ["This is an example sentence", "Each sentence is converted"]
-
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-embeddings = model.encode(sentences)
-print(embeddings)
+def get_sentence_embeddings():
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    embeddings = model.encode(sentences)
+    return embeddings
 
 
 api.add_resource(Register, '/register')
@@ -161,4 +161,4 @@ api.add_resource(Store, '/store')
 api.add_resource(Get, '/get')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5000)
