@@ -9,15 +9,14 @@ This is a Python-based application that provides Database as a Service(DBaaS). I
 
 ## Features
 - Securely store usernames and passwords in a MongoDB database.
-- Expose REST API endpoints for experimentation, interacting with the DB and storage.
+- Uses Bcrypt to securely hash passwords before storing them
+- Exposes REST API endpoints for interacting with the database and experimenting with data storage.
 - Fully containerized for simple and reproducible deployment.
 
 ## Installation
 
 ### Prerequisites
-- Docker
-- Python 3.7+ (if running locally)
-- pip (Python package manager, if running locally)
+- Docker (Docker Desktop or Docker Engine)
 
 ### Steps
 1. Clone this repository:
@@ -32,69 +31,25 @@ This is a Python-based application that provides Database as a Service(DBaaS). I
    ```
    This will set up the application and MongoDB.
 
-3. (Optional) Run locally without Docker:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   python app.py
-   ```
-
 ## Usage
+	Once the containers are running, test the API using Postman or cURL.
 
 ### REST API Endpoints
-1. **User Registration Endpoint**
-   - URL: `http://localhost:5000/register`
-   - Method: POST
-   - Payload:
-     ```json
-     {
-       "username": "test_user",
-       "password": "secure_password"
-     }
-     ```
-   - Response:
-     ```json
-     {
-       "message": "User registered successfully."
-     }
-     ```
-
-3. **User Login Endpoint**
-   - URL: `http://localhost:5000/login`
-   - Method: POST
-   - Payload:
-     ```json
-     {
-       "username": "test_user",
-       "password": "secure_password"
-     }
-     ```
-   - Response:
-     ```json
-     {
-       "message": "Login successful."
-     }
-     ```
-
-
-
-### Local Testing
-Run the app locally and test the endpoints using a tool like Postman or cURL.
+### REST API Endpoints
+- `POST /register` – Register a new user
+- `POST /login` – Authenticate a user
+- `GET /users` – Retrieve a list of users *(coming soon)*
 
 ## How It Works
 User data is securely stored in MongoDB, with endpoints for registration and authentication.
 
 ## File Structure
 ```
-textsimilarity_restapi/
+mongodb_restapi/
 ├── app/                  # Application code
 │   ├── app.py            # Main Flask application
 │   ├── Dockerfile        # Docker configuration for the app
 │   └── requirements.txt  # Python dependencies
-├── db/                   # MongoDB-related setup
-│   ├── init.js           # MongoDB initialization script
-│   └── docker-entrypoint-initdb.d/  # MongoDB entrypoint scripts
 ├── docker-compose.yml    # Docker Compose setup for app and MongoDB
 ├── README.md             # Project documentation
 └── LICENSE               # License file
