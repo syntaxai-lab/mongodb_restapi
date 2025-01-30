@@ -22,8 +22,8 @@ This is a Python-based application that provides Database as a Service(DBaaS). I
 ### Steps
 1. Clone this repository:
    ```bash
-   git clone https://github.com/syntaxai-lab/textsimilarity_restapi.git
-   cd textsimilarity_restapi
+   git clone https://github.com/syntaxai-lab/mongodb_restapi.git
+   cd mongodb_restapi
    ```
 
 2. Build and run the Docker container:
