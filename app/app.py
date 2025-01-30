@@ -2,11 +2,10 @@ from functools import wraps
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
 from pymongo import MongoClient
-from sentence_transformers import SentenceTransformer
 import bcrypt
 
 
-# Api Setup
+# This flask app is going to be an api
 app = Flask(__name__)
 api = Api(app)
 
@@ -43,6 +42,14 @@ class Register(Resource):
             "msg": "You successfully signed up for the API"
         }
         return jsonify(retJson)
+
+
+def UserExist(username):
+    # if users.find({"Username":username}).count() == 0:
+    if users.count_documents({"Username":username}) == 0:
+        return False
+    else:
+        return True
 
 
 def verifyPw(username, password):
@@ -149,11 +156,6 @@ class Get(Resource):
 
 
 # ************************************************
-sentences = ["This is an example sentence", "Each sentence is converted"]
-def get_sentence_embeddings():
-    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    embeddings = model.encode(sentences)
-    return embeddings
 
 
 api.add_resource(Register, '/register')
